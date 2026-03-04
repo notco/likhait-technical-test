@@ -3,8 +3,15 @@ puts "Clearing existing data..."
 Expense.destroy_all
 Category.destroy_all
 
-# Create categories
+# Create all categories
 puts "Creating categories..."
+
+# Categories for original init.sql expenses
+transport = Category.create!(name: 'Transport')
+supplies = Category.create!(name: 'Supplies')
+utilities = Category.create!(name: 'Utilities')
+
+# Categories from original seeds.rb (keeping all 10)
 categories = [
   'Food',
   'Transportation',
@@ -22,10 +29,38 @@ created_categories = categories.map do |cat_name|
   Category.create!(name: cat_name)
 end
 
-puts "Created #{created_categories.count} categories"
+puts "Created #{Category.count} categories total"
 
-# Generate expenses from January 2024 to February 18, 2026
-puts "Creating expenses from January 2024 to February 18, 2026..."
+# Create initial seed expenses (from original init.sql)
+puts "Creating initial seed expenses..."
+
+# Get references to categories needed for init.sql expenses
+food = Category.find_by(name: 'Food')
+entertainment = Category.find_by(name: 'Entertainment')
+
+initial_expenses = [
+  { description: 'Team Lunch at Italian Restaurant', amount: 1500.50, category: food, payer_name: 'John Doe' },
+  { description: 'Grab to Client Meeting', amount: 350.00, category: transport, payer_name: 'Jane Smith' },
+  { description: 'Office Supplies - Pens and Paper', amount: 450.75, category: supplies, payer_name: 'Mike Johnson' },
+  { description: 'Team Building Dinner', amount: 2800.00, category: food, payer_name: 'Sarah Lee' },
+  { description: 'Taxi to Airport', amount: 800.00, category: transport, payer_name: 'John Doe' },
+  { description: 'Coffee and Snacks for Meeting', amount: 250.25, category: food, payer_name: 'Emily Chen' },
+  { description: 'Printer Ink Cartridges', amount: 680.00, category: supplies, payer_name: 'Mike Johnson' },
+  { description: 'Uber for Site Visit', amount: 420.50, category: transport, payer_name: 'Jane Smith' },
+  { description: 'Client Lunch Meeting', amount: 1850.00, category: food, payer_name: 'Sarah Lee' },
+  { description: 'Office Cleaning Supplies', amount: 320.00, category: supplies, payer_name: 'Emily Chen' },
+  { description: 'Team Movie Night', amount: 1200.00, category: entertainment, payer_name: 'John Doe' },
+  { description: 'Internet Bill', amount: 2500.00, category: utilities, payer_name: 'Mike Johnson' },
+  { description: 'Breakfast Meeting with Client', amount: 580.00, category: food, payer_name: 'Jane Smith' },
+  { description: 'Bus Tickets for Conference', amount: 150.00, category: transport, payer_name: 'Sarah Lee' },
+  { description: 'Electricity Bill', amount: 3200.00, category: utilities, payer_name: 'Emily Chen' }
+]
+
+initial_expenses.each do |expense_data|
+  Expense.create!(expense_data)
+end
+
+puts "Created #{initial_expenses.count} initial expenses"
 
 # Define expense templates for variety
 expense_templates = {
@@ -111,6 +146,14 @@ expense_templates = {
   ]
 }
 
+# Generate additional expenses from January 2024 to February 18, 2026
+puts "Generating additional expenses from January 2024 to February 18, 2026..."
+
+# Use only categories that have templates defined
+categories_with_templates = expense_templates.keys
+created_categories = Category.where(name: categories_with_templates).to_a
+puts "Using #{created_categories.count} categories for generated expenses"
+
 # Start date: January 1, 2024
 # End date: February 18, 2026
 start_date = Date.new(2024, 1, 1)
@@ -124,7 +167,7 @@ while current_date <= end_date
   daily_expense_count = rand(3..8)
 
   daily_expense_count.times do
-    # Pick a random category
+    # Pick a random category from those with templates
     category = created_categories.sample
 
     # Get templates for this category

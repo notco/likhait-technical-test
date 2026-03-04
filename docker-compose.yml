@@ -56,7 +56,6 @@ services:
       sh -c "
         bundle install &&
         bundle exec rails db:migrate &&
-        bundle exec rails db:seed &&
         rm -f /rails/tmp/pids/server.pid &&
         bundle exec rails server -b 0.0.0.0
       "
