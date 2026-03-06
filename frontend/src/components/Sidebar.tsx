@@ -196,7 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path d="M4 7h16M4 12h16M4 17h16" />
+            <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
           </svg>
           <span style={navTextStyle}>Categories</span>
         </button>
