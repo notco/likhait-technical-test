@@ -14,7 +14,7 @@ RSpec.describe Expense, type: :model do
         )
         
         expect(expense).not_to be_valid
-        expect(expense.errors[:date]).to include("must be less than or equal to #{Date.today}")
+        expect(expense.errors[:date]).to include("must be today or earlier")
       end
     end
 
