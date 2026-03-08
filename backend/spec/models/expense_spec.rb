@@ -12,7 +12,7 @@ RSpec.describe Expense, type: :model do
           date: Date.tomorrow,
           category: category
         )
-        
+
         expect(expense).not_to be_valid
         expect(expense.errors[:date]).to include("must be today or earlier")
       end
@@ -26,7 +26,7 @@ RSpec.describe Expense, type: :model do
           date: Date.today,
           category: category
         )
-        
+
         expect(expense).to be_valid
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe Expense, type: :model do
           date: Date.yesterday,
           category: category
         )
-        
+
         expect(expense).to be_valid
       end
     end
