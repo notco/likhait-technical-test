@@ -14,6 +14,7 @@ import { deleteExpense, updateExpense } from "../services/api";
 interface CalendarExpenseTableProps {
   expenses: Expense[];
   onExpenseUpdated: () => void;
+  onShowMessage?: (message: string) => void;
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -21,6 +22,7 @@ const ITEMS_PER_PAGE = 10;
 export function CalendarExpenseTable({
   expenses,
   onExpenseUpdated,
+  onShowMessage,
 }: CalendarExpenseTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -49,10 +51,11 @@ export function CalendarExpenseTable({
       await deleteExpense(deletingExpense.id);
       setIsDeleteModalOpen(false);
       setDeletingExpense(null);
+      onShowMessage?.("Expense deleted successfully");
       onExpenseUpdated();
     } catch (error) {
       console.error("Failed to delete expense:", error);
-      alert("Failed to delete expense");
+      onShowMessage?.("Failed to delete expense");
     }
   };
 
@@ -62,6 +65,7 @@ export function CalendarExpenseTable({
       await updateExpense(editingExpense.id, data);
       setIsEditModalOpen(false);
       setEditingExpense(null);
+      onShowMessage?.("Expense updated successfully");
       onExpenseUpdated();
     } catch (error) {
       console.error("Failed to update expense:", error);
