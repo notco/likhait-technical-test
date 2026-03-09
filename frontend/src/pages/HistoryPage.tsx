@@ -8,6 +8,7 @@ import { CalendarExpenseTable } from "../components/CalendarExpenseTable";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { Modal, Button } from "../vibes";
 import { COLORS } from "../constants/colors";
+import { toast } from "react-toastify";
 
 const HistoryPage: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -75,9 +76,11 @@ const HistoryPage: React.FC = () => {
     try {
       await createExpense(data);
       setIsModalOpen(false);
+      toast.success("Expense created successfully");
       fetchExpenses();
     } catch (error) {
       console.error("Error creating expense:", error);
+      toast.error("Failed to create expense");
       throw error;
     }
   };
@@ -173,6 +176,7 @@ const HistoryPage: React.FC = () => {
               <CalendarExpenseTable
                 expenses={expenses}
                 onExpenseUpdated={fetchExpenses}
+                onShowMessage={(msg) => toast.info(msg)}
               />
             </div>
           </>

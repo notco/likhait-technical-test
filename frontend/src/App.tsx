@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import HistoryPage from "./pages/HistoryPage";
 import { COLORS } from "./constants/colors";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("history");
@@ -34,6 +36,7 @@ function App() {
       <main style={mainStyle}>
         {currentPage === "history" && <HistoryPage />}
       </main>
+      <ToastContainer />
     </div>
   );
 }
