@@ -21,8 +21,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_18_000002) do
   create_table "expenses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "description", null: false
     t.decimal "amount", precision: 10, scale: 2, null: false
-    t.date "date", null: false
+    t.date "date"
     t.bigint "category_id", null: false
+    t.string "payer_name", limit: 100
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_expenses_on_category_id"
